@@ -113,7 +113,7 @@ public class LinkedListDeque<T> implements Deque<T>{
 
 
     @Override
-    public Iterator iterator() {
+    public Iterator<T> iterator() {
         return new Iterator<T>() {
             node ptr = sentinel;
             @Override
