@@ -21,7 +21,12 @@ public class LinkedListDeque<T> implements Deque<T>{
     private node sentinel;
     private int size;
 
+    /**
+     * 创建一个空链表
+     * 需要让sentinel自己成环
+     */
     public LinkedListDeque() {
+
         sentinel = new node(null, null, null);
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
@@ -69,6 +74,10 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
     }
 
+    /**
+     * remove的时候一定要确保把所有的引用都删掉了, 让垃圾回收顺利进行
+     * @return
+     */
     @Override
     public T removeLast() {
         if (size == 0) {
@@ -96,18 +105,34 @@ public class LinkedListDeque<T> implements Deque<T>{
 
     @Override
     public T get(int index) {
+        if (index > size) {
+            return null;
+        }
         node ptr = sentinel.next;
-        int i = 1;
-        while (i < index && ptr != sentinel) {
-            System.out.print(ptr.item + " -> ");
+        while (index > 0) {
+            // System.out.print(ptr.item + " -> ");
             ptr = ptr.next;
-            i++;
+            index--;
         }
         if (ptr == sentinel) {
             // TODO: 异常处理
             return null;
         }
         return ptr.item;
+    }
+
+    private T getRecursive(node start, int index) {
+        if (index == 0) {
+            return start.item;
+        }
+        return getRecursive(start.next, index - 1);
+    }
+
+    public T getRecursive(int index) {
+        if (index > size) {
+            return null;
+        }
+        return getRecursive(sentinel.next, index);
     }
 
 
